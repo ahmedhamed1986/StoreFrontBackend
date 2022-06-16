@@ -53,7 +53,7 @@ const create =async (req:Request, res: Response) => {
     try{
         const newUsers = await store_users.create(userCreate);
         var token = jwt.sign({nUser: newUsers},process.env.TOKEN_SECRET as string)
-        res.json(token)
+        res.json(newUsers)
     }catch(err){
         res.status(400)
         res.json(err)
