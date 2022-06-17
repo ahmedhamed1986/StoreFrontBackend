@@ -47,7 +47,7 @@ b. GET '/products:/id' this will return a product using its id.
 example: '/products/2'
 
 c. POST '/products' this will enables you to create new product (you will need to enter token).
-you must enter the "name", "prcie" to succeufully creaete the prodcut, and optionally you can enter the "category" if you want.
+you must enter the "name", "prcie" to succeufully create the prodcut, and optionally you can enter the "category" if you want.
 
 #### 3- Orders endpoint
 a. GET '/orders/:id' this will show all the orders that relate to certain user, using the user id.
@@ -55,6 +55,10 @@ example: '/orders/2', will return all the orders for user that have id of 2.
 
 b. GET '/orders/:id/complete' this will show all the COMPLETED orders that relate to certain user, using the user id.
 example: '/orders/2/complete', will return all the orders for user that have id of 2 and the order status is 'complete'.
+
+c. POST '/orders/:id/products' this will enables you to add product to your order, knowing that parametert id is relevant to order id (you will need to enter token).
+you must enter the "quantity" and "productID" to succeufully add the product.
+example: '/orders/2/products', will allow you to add product to order having order_id of 2.
 
 ## Testing
 ### Jasmine Test
