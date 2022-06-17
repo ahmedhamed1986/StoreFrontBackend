@@ -51,6 +51,7 @@ const create =async (req:Request, res: Response) => {
     }
 }
 
+    
 
  const productStore = (app:express.Application)=>{
     app.get('/products',index)

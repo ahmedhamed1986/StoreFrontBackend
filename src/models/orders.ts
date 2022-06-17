@@ -1,10 +1,9 @@
+import { NumericLiteral } from "typescript";
 import client from "../database";
 
 export type order_type ={
     id?: number;
     status: string;
-    quantity: number;
-    product_id: number;
     user_id: number;
 
 }
@@ -37,6 +36,20 @@ export class Order{
             return result.rows
         }catch (err){
             throw new Error(`can't get orders ${err}`)
+        }
+    }
+
+    // add products to order
+    async addProduct (quantity:number, orderId: number, productId:number):Promise<order_type> {
+        try{
+            const myConnection = await client.connect();
+            const sql = `INSERT INTO order_products (quantity, order_id, product_id) VALUES ($1, $2, $3)`
+            const result = await myConnection.query(sql,[quantity, orderId, productId])
+            myConnection.release()
+
+            return result.rows[0]
+        }catch (err){
+            throw new Error(`can't add product ${err}`)
         }
     }
 
