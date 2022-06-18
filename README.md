@@ -78,7 +78,7 @@ first you will need to run the server using:
 ``` TypeScript
 npm run watch
 ```
-note that the server runs on port:3000 on localhost, so to try it goto
+note that the server runs on port: ```3000``` on localhost, so to try it goto
 ```
 http://localhost:3000
 ```

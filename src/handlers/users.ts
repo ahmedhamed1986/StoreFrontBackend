@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const store_users = new Users()
+export const store_users = new Users()
 
 const index= async (req:Request, res:Response) => {
     try{
