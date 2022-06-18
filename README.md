@@ -6,8 +6,40 @@ it was required to create API that holds all the data in database.
 
 ## How you can use it
 
-### Setup database
-1- You have to create .env file, containing all the required parameters to create connection to postgresql database (check database.ts file to know the parameters).
+### Setup PostgreSql databases 
+1- you need to enter psql postgresql environment usnig command:
+```
+psql -U username postgresql
+```
+and enter the password related to username.
+
+Note that the postgresql port used is: ```5432```.
+
+2- Create 2 databases using psql postgresql, one database for real developmente process and the othe is for testing, you can create the database in postgresql command environment using the command:
+```
+CREATE DATABASE dev_database;
+CREATE DATABASE test_database;
+```
+here we used 'dev_database' as the name for development database, and 'test_database' fot tesing database.
+
+3- Connect to the desired database, in case of testing you may want to connect to testing database by using command:
+```
+\c test_database
+```
+
+4- To exit from postgres environment and retutn to normal bash command
+```
+\q
+```
+
+### Setup node environment
+1- you need to install npm packages in order to e able to use this API, run the command
+```
+npm install
+```
+you will notice a folder called 'node_modules' has appeared, and all packages has been installed.
+
+2- You have to create .env file, containing all the required parameters to create connection to postgresql database (check database.ts file to know the parameters).
 this is an example of what should the .env file looks like
 
 ```
@@ -22,15 +54,35 @@ SALT_ROUND=10
 TOKEN_SECRET=anysecret
 ```
 
-2- After that you must create the databases in postgress to start using the API, you will need original database, and database for testing.
+3- In the .env file replace the databases names with the one you have created, POSTGRES_DB for the normal developing database, and POSTGRES_DB_TEST for the testing database. In our example it will be as following
+```
+POSTGRES_HOST=127.0.0.1
+POSTGRES_DB=dev_database
+POSTGRES_USER=user
+POSTGRES_PASSWORD=password
+POSTGRES_DB_TEST=test_database
+ENV=dev
+BCRYPT_PASSWORD=any-password
+SALT_ROUND=10
+TOKEN_SECRET=anysecret
+```
 
-3- Then you will need to migrate the table to the database, you can use the command:
+4- Then you will need to migrate the table to the database, you can use the command:
 ```typescript
 db-migrate up:original
 ```
-This will add a clear tables in the database.
+This will add a clear tables in the normal database.
 
-### Using endpoints
+### Using the server and endpoints
+first you will need to run the server using:
+``` TypeScript
+npm run watch
+```
+note that the server runs on port:3000 on localhost, so to try it goto
+```
+http://localhost:3000
+```
+
 #### 1- Users endpoint
 a. POST '/users' this will enables you to create new user, and it will return a token, that you will use in certain endpoints.
 you must enter the "firstName", "lastName", and "password" to succeufully creaete the user.
@@ -59,6 +111,7 @@ example: '/orders/2/complete', will return all the orders for user that have id 
 c. POST '/orders/:id/products' this will enables you to add product to your order, knowing that parametert id is relevant to order id (you will need to enter token).
 you must enter the "quantity" and "productID" to succeufully add the product.
 example: '/orders/2/products', will allow you to add product to order having order_id of 2.
+
 
 ## Testing
 ### Jasmine Test
