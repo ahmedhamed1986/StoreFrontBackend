@@ -1,3 +1,4 @@
+import client from "../../database"
 import {Users, user_type} from "../users"
 
 const testUser = new Users()
@@ -32,7 +33,7 @@ describe('User Model', ()=> {
 
 
     describe('Create method', ()=>{
-
+    
         it('should be there',()=>{
             expect(testUser.create).toBeDefined
         })

@@ -2,18 +2,11 @@ import express, {Request, Response} from 'express'
 import { Order, order_type } from '../models/orders'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
+import jwt_authintacate from '../middlewares/jwt_auth'
 
 const store_orders = new Order()
 
 const user_oders =async (req:Request, res:Response) => {
-    try{
-        jwt.verify(req.body.token, process.env.TOKEN_SECRET as string)
-    }catch(err){
-        res.status(401)
-        res.json(`Invalid token: ${err}`)
-        return
-    }
-
     try{
         const orders = await store_orders.show(req.params.id as unknown as number)
         res.json(orders)
@@ -26,14 +19,6 @@ const user_oders =async (req:Request, res:Response) => {
 
 const completes_oders =async (req:Request, res:Response) => {
     try{
-        jwt.verify(req.body.token, process.env.TOKEN_SECRET as string)
-    }catch(err){
-        res.status(401)
-        res.json(`Invalid token: ${err}`)
-        return
-    }
-    
-    try{
         const orders = await store_orders.showCompleteOrders(req.params.id as unknown as number)
         res.json(orders)
     }catch(err){
@@ -44,14 +29,6 @@ const completes_oders =async (req:Request, res:Response) => {
 }
 
 const addProduct =async (req:Request, res: Response) => {
-    try{
-        jwt.verify(req.body.token, process.env.TOKEN_SECRET as string)
-    }catch(err){
-        res.status(401)
-        res.json(`Invalid token: ${err}`)
-        return
-    }
-
     try {
         const orderID = req.params.id as unknown as number;
         const productID = req.body.productID;
@@ -67,9 +44,9 @@ const addProduct =async (req:Request, res: Response) => {
 
 
 const orderStore = (app:express.Application) => {
-    app.get('/orders/:id',user_oders)
-    app.get('/orders/:id/complete',completes_oders)
-    app.post('/orders/:id/products',addProduct)
+    app.get('/orders/:id',jwt_authintacate,user_oders)
+    app.get('/orders/:id/complete',jwt_authintacate,completes_oders)
+    app.post('/orders/:id/products',jwt_authintacate,addProduct)
 }
 
 export default orderStore

@@ -4,17 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const orders_1 = require("../models/orders");
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const jwt_auth_1 = __importDefault(require("../middlewares/jwt_auth"));
 const store_orders = new orders_1.Order();
 const user_oders = async (req, res) => {
-    try {
-        jsonwebtoken_1.default.verify(req.body.token, process.env.TOKEN_SECRET);
-    }
-    catch (err) {
-        res.status(401);
-        res.json(`Invalid token: ${err}`);
-        return;
-    }
     try {
         const orders = await store_orders.show(req.params.id);
         res.json(orders);
@@ -26,14 +18,6 @@ const user_oders = async (req, res) => {
 };
 const completes_oders = async (req, res) => {
     try {
-        jsonwebtoken_1.default.verify(req.body.token, process.env.TOKEN_SECRET);
-    }
-    catch (err) {
-        res.status(401);
-        res.json(`Invalid token: ${err}`);
-        return;
-    }
-    try {
         const orders = await store_orders.showCompleteOrders(req.params.id);
         res.json(orders);
     }
@@ -43,14 +27,6 @@ const completes_oders = async (req, res) => {
     }
 };
 const addProduct = async (req, res) => {
-    try {
-        jsonwebtoken_1.default.verify(req.body.token, process.env.TOKEN_SECRET);
-    }
-    catch (err) {
-        res.status(401);
-        res.json(`Invalid token: ${err}`);
-        return;
-    }
     try {
         const orderID = req.params.id;
         const productID = req.body.productID;
@@ -64,8 +40,8 @@ const addProduct = async (req, res) => {
     }
 };
 const orderStore = (app) => {
-    app.get('/orders/:id', user_oders);
-    app.get('/orders/:id/complete', completes_oders);
-    app.post('/orders/:id/products', addProduct);
+    app.get('/orders/:id', jwt_auth_1.default, user_oders);
+    app.get('/orders/:id/complete', jwt_auth_1.default, completes_oders);
+    app.post('/orders/:id/products', jwt_auth_1.default, addProduct);
 };
 exports.default = orderStore;

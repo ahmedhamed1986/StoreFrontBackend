@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const products_1 = require("../models/products");
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const jwt_auth_1 = __importDefault(require("../middlewares/jwt_auth"));
 const store_products = new products_1.Product();
 const index = async (req, res) => {
     try {
@@ -28,14 +28,6 @@ const show = async (req, res) => {
 };
 const create = async (req, res) => {
     try {
-        jsonwebtoken_1.default.verify(req.body.token, process.env.TOKEN_SECRET);
-    }
-    catch (err) {
-        res.status(401);
-        res.json(`Invalid token: ${err}`);
-        return;
-    }
-    try {
         const productCreate = {
             name: req.body.name,
             price: req.body.price,
@@ -53,6 +45,6 @@ const create = async (req, res) => {
 const productStore = (app) => {
     app.get('/products', index);
     app.get('/products/:id', show);
-    app.post('/products', create);
+    app.post('/products', jwt_auth_1.default, create);
 };
 exports.default = productStore;

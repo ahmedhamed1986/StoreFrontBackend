@@ -7,17 +7,10 @@ exports.store_users = void 0;
 const users_1 = require("../models/users");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const jwt_auth_1 = __importDefault(require("../middlewares/jwt_auth"));
 dotenv_1.default.config();
 exports.store_users = new users_1.Users();
 const index = async (req, res) => {
-    try {
-        jsonwebtoken_1.default.verify(req.body.token, process.env.TOKEN_SECRET);
-    }
-    catch (err) {
-        res.status(401);
-        res.json(`Invalid token: ${err}`);
-        return;
-    }
     try {
         const users = await exports.store_users.index();
         res.json(users);
@@ -28,14 +21,6 @@ const index = async (req, res) => {
     }
 };
 const show = async (req, res) => {
-    try {
-        jsonwebtoken_1.default.verify(req.body.token, process.env.TOKEN_SECRET);
-    }
-    catch (err) {
-        res.status(401);
-        res.json(`Invalid token: ${err}`);
-        return;
-    }
     try {
         const users = await exports.store_users.show(req.params.id);
         res.json(users);
@@ -54,7 +39,7 @@ const create = async (req, res) => {
     try {
         const newUsers = await exports.store_users.create(userCreate);
         var token = jsonwebtoken_1.default.sign({ nUser: newUsers }, process.env.TOKEN_SECRET);
-        res.json(newUsers);
+        res.json({ "token": token });
     }
     catch (err) {
         res.status(400);
@@ -62,8 +47,8 @@ const create = async (req, res) => {
     }
 };
 const userStore = (app) => {
-    app.get('/users', index);
-    app.get('/users/:id', show);
+    app.get('/users', jwt_auth_1.default, index);
+    app.get('/users/:id', jwt_auth_1.default, show);
     app.post('/users', create);
 };
 exports.default = userStore;

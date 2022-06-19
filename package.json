@@ -9,7 +9,7 @@
     "test": "npm run tsc && set ENV=test&& db-migrate up:test_migration -e test&& npm run jasmine && db-migrate reset:test_migration -e test",
     "tsc": "tsc",
     "jasmine": "jasmine",
-    "preTest": "npm run tsc && npm run jasmine"
+    "pretest": "npm run tsc && npm run jasmine"
   },
   "author": "Udacity",
   "license": "ISC",
@@ -33,7 +33,7 @@
     "@types/supertest": "^2.0.12",
     "cross-env": "^7.0.3",
     "jasmine": "^3.6.4",
-    "jasmine-spec-reporter": "^6.0.0",
+    "jasmine-spec-reporter": "^7.0.0",
     "jasmine-ts": "^0.3.0",
     "supertest": "^6.2.3",
     "ts-node": "^9.1.1",

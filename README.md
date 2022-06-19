@@ -102,10 +102,10 @@ c. POST '/products' this will enables you to create new product (you will need t
 you must enter the "name", "prcie" to succeufully create the prodcut, and optionally you can enter the "category" if you want.
 
 #### 3- Orders endpoint
-a. GET '/orders/:id' this will show all the orders that relate to certain user, using the user id.
+a. GET '/orders/:id' this will show all the orders that relate to certain user, using the user id (you will need to enter token).
 example: '/orders/2', will return all the orders for user that have id of 2.
 
-b. GET '/orders/:id/complete' this will show all the COMPLETED orders that relate to certain user, using the user id.
+b. GET '/orders/:id/complete' this will show all the COMPLETED orders that relate to certain user, using the user id (you will need to enter token).
 example: '/orders/2/complete', will return all the orders for user that have id of 2 and the order status is 'complete'.
 
 c. POST '/orders/:id/products' this will enables you to add product to your order, knowing that parametert id is relevant to order id (you will need to enter token).
