@@ -1,6 +1,7 @@
 import express, { Request,Response } from "express";
 import { product_type, Product } from "../models/products";
 import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
 
 import jwt_authintacate from "../middlewares/jwt_auth";
 
