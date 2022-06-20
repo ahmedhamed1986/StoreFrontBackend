@@ -47,6 +47,6 @@ describe('tests of product routes', () => {
     it('Should return status error because there is no jwt', async () => {
         const response = await request.post('/products')
             .send(newProduct);
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(401);
     });
 });
